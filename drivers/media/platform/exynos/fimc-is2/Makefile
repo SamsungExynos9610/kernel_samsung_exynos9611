@@ -79,6 +79,7 @@ subdir-ccflags-y += -Idrivers/media/platform/exynos/fimc-is2/vendor
 subdir-ccflags-y += -Idrivers/media/platform/exynos/fimc-is2/sensor/csi
 subdir-ccflags-y += -Idrivers/media/platform/exynos/fimc-is2/sensor/module_framework
 subdir-ccflags-y += -Idrivers/media/platform/exynos/fimc-is2/vendor/mcd/preprocessor
+subdir-ccflags-y += -Wno-sizeof-pointer-memaccess
 subdir-ccflags-$(CONFIG_FIMC_IS_V3_1_1) += -Idrivers/media/platform/exynos/fimc-is2/ischain/fimc-is-v3_1_1
 subdir-ccflags-$(CONFIG_FIMC_IS_V3_11_0) += -Idrivers/media/platform/exynos/fimc-is2/ischain/fimc-is-v3_11_0
 subdir-ccflags-$(CONFIG_FIMC_IS_V3_20_0) += -Idrivers/media/platform/exynos/fimc-is2/ischain/fimc-is-v3_20_0
