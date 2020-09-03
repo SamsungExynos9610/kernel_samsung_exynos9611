@@ -43,14 +43,6 @@ obj-$(CONFIG_MST_LDO)	  += mstdrv/
 subdir-$(CONFIG_FIVE)			+= samsung/five
 obj-$(CONFIG_FIVE)			+= samsung/five/
 
-# PROCA module
-subdir-$(CONFIG_PROCA)			+= proca
-obj-$(CONFIG_PROCA)			+= proca/
-
-# Kbuild should always enter proca/gaf because gaf should be always built
-subdir-y += proca/gaf
-obj-y    += proca/gaf/
-
 # Knox SDP
 obj-$(CONFIG_SDP) += sdp/
 obj-$(CONFIG_SDP) += sdp/built-in.o
