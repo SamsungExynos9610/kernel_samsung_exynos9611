@@ -2595,7 +2595,7 @@
 					dev = "/dev/block/platform/13520000.ufs/by-name/vendor";
 					type = "ext4";
 					mnt_flags = "ro";
-					fsmgr_flags = "wait,verify,avb";
+					fsmgr_flags = "wait,avb";
 					status = "okay";
 				};
 
@@ -2604,7 +2604,7 @@
 					dev = "/dev/block/platform/13520000.ufs/by-name/product";
 					type = "ext4";
 					mnt_flags = "ro";
-					fsmgr_flags = "wait,verify,avb";
+					fsmgr_flags = "wait,avb";
 				};
 			};
 		};
