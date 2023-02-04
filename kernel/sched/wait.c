@@ -11,6 +11,8 @@
 #include <linux/wait.h>
 #include <linux/hash.h>
 #include <linux/kthread.h>
+#include <linux/poll.h>
+#include <linux/freezer.h>
 
 void __init_waitqueue_head(struct wait_queue_head *wq_head, const char *name, struct lock_class_key *key)
 {
@@ -213,6 +215,13 @@ void __wake_up_sync(struct wait_queue_head *wq_head, unsigned int mode, int nr_e
 }
 EXPORT_SYMBOL_GPL(__wake_up_sync);	/* For internal use only */
 
+void __wake_up_pollfree(struct wait_queue_head *wq_head)
+{
+	__wake_up(wq_head, TASK_NORMAL, 0, (void *)(POLLHUP | POLLFREE));
+	/* POLLFREE must have cleared the queue. */
+	WARN_ON_ONCE(waitqueue_active(wq_head));
+}
+
 /*
  * Note: we use "set_current_state()" _after_ the wait-queue add,
  * because we need a memory barrier there on SMP, so that any
@@ -297,6 +306,30 @@ long prepare_to_wait_event(struct wait_queue_head *wq_head, struct wait_queue_en
 	return ret;
 }
 EXPORT_SYMBOL(prepare_to_wait_event);
+
+/*
+ * Note! These two wait functions are entered with the
+ * wait-queue lock held (and interrupts off in the _irq
+ * case), so there is no race with testing the wakeup
+ * condition in the caller before they add the wait
+ * entry to the wake queue.
+ */
+  int do_wait_freeze(wait_queue_head_t *wq, wait_queue_entry_t *wait)
+{
+	if (likely(list_empty(&wait->entry)))
+		__add_wait_queue_entry_tail(wq, wait);
+
+	set_current_state(TASK_INTERRUPTIBLE);
+	if (signal_pending(current))
+		return -ERESTARTSYS;
+
+	spin_unlock(&wq->lock);
+	schedule();
+	try_to_freeze();
+	spin_lock(&wq->lock);
+	return 0;
+}
+EXPORT_SYMBOL(do_wait_freeze);
 
 /*
  * Note! These two wait functions are entered with the
