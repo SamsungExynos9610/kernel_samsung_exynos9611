@@ -4960,8 +4960,7 @@ static ssize_t get_lp_dump(struct device *dev, struct device_attribute *attr,
 
 	for (i = (dump_num - 1); i >= 0; i--) {
 		u16 data0, data1, data2, data3, data4;
-		const int msg_len = 128;
-		char buff[msg_len] = {0, };
+		char buff[128] = {0, };
 		u16 string_addr;
 		u16 offset = 0;
 
@@ -4991,9 +4990,9 @@ static ssize_t get_lp_dump(struct device *dev, struct device_attribute *attr,
 			data3 = (string_data[7] & 0xFF) << 8 | (string_data[6] & 0xFF);
 
 			if (data0 || data1 || data2 || data3) {
-				snprintf(buff, msg_len, "%d: %04x%04x%04x%04x\n",
+				snprintf(buff, 128, "%d: %04x%04x%04x%04x\n",
 					 string_addr, data0, data1, data2, data3);
-				strncat(buf, buff, msg_len);
+				strncat(buf, buff, 128);
 			}
 		} else {
 			if (string_addr % IST40XX_ADDR_LEN)
@@ -5024,9 +5023,9 @@ static ssize_t get_lp_dump(struct device *dev, struct device_attribute *attr,
 					(string_data[8 + offset] & 0xFF);
 
 			if (data0 || data1 || data2 || data3 || data4) {
-				snprintf(buff, msg_len, "%d: %04x%04x%04x%04x%04x\n",
+				snprintf(buff, 128, "%d: %04x%04x%04x%04x%04x\n",
 						string_addr, data0, data1, data2, data3, data4);
-				strncat(buf, buff, msg_len);
+				strncat(buf, buff, 128);
 			}
 		}
 	}
