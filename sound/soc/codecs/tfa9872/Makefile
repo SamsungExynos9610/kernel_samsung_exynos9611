@@ -62,3 +62,5 @@ CFLAGS_tfa_log.o       += $(TFA98XX_FLAGS)
 
 # built-in driver
 obj-y	+= snd-soc-tfa98xx.o
+
+subdir-ccflags-y := $(call cc-disable-warning, enum-conversion)
