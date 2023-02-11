@@ -25,4 +25,4 @@ jobs:
         arch: arm64
         compiler: clang/11/binutils
         defconfig: exynos9610-a50sxx_defconfig
-        image: Image.gz-dtb
+        image: Image.gz
