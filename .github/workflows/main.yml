@@ -20,7 +20,7 @@ jobs:
       uses: lemniskett/android-kernel-actions@master
       id: build
       env:
-        NAME: A50S-DECON
+        NAME: Exynos9610
       with:
         arch: arm64
         compiler: clang/11/binutils
